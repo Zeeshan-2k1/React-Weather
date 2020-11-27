@@ -9,14 +9,20 @@ const App = () => {
 
   if (window.navigator.geolocation) {
     const location = window.navigator.geolocation;
-    location.getCurrentPosition(async (p) => {
-      const lat = p.coords.latitude;
-      const lon = p.coords.longitude;
 
-      const data = await fetchWeatherByCoords(lat, lon);
+    location.getCurrentPosition(
+      async (p) => {
+        const lat = p.coords.latitude;
+        const lon = p.coords.longitude;
 
-      setWeather(data);
-    });
+        const data = await fetchWeatherByCoords(lat, lon);
+        setWeather(data);
+      },
+      (err) => {
+        alert(err.message);
+        console.error(err);
+      }
+    );
   }
 
   const search = async (e) => {
