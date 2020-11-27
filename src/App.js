@@ -27,10 +27,15 @@ const App = () => {
 
   const search = async (e) => {
     if (e.key === 'Enter') {
-      const data = await fetchWeatherByCity(query);
-
-      setWeather(data);
-      setQuery('');
+      await fetchWeatherByCity(query)
+        .then((data) => {
+          setWeather(data);
+          setQuery('');
+        })
+        .catch((err) => {
+          alert(err.message);
+          console.error(err.message);
+        });
     }
   };
 
