@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { fetchWeatherByCity, fetchWeatherByCoords } from './api/fetchWeather';
 import './App.css';
@@ -7,23 +7,25 @@ const App = () => {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
 
-  if (window.navigator.geolocation) {
-    const location = window.navigator.geolocation;
+  useEffect(() => {
+    if (window.navigator.geolocation) {
+      const location = window.navigator.geolocation;
 
-    location.getCurrentPosition(
-      async (p) => {
-        const lat = p.coords.latitude;
-        const lon = p.coords.longitude;
+      location.getCurrentPosition(
+        async (p) => {
+          const lat = p.coords.latitude;
+          const lon = p.coords.longitude;
 
-        const data = await fetchWeatherByCoords(lat, lon);
-        setWeather(data);
-      },
-      (err) => {
-        alert(err.message);
-        console.error(err);
-      }
-    );
-  }
+          const data = await fetchWeatherByCoords(lat, lon);
+          setWeather(data);
+        },
+        (err) => {
+          alert(err.message);
+          console.error(err);
+        }
+      );
+    }
+  }, []);
 
   const search = async (e) => {
     if (e.key === 'Enter') {
